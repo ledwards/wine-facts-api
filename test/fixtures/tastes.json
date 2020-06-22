@@ -1,0 +1,640 @@
+{
+  "structure": {
+    "acidity": 3.378862,
+    "fizziness": null,
+    "intensity": 4.872462,
+    "sweetness": 1.584688,
+    "tannin": 3.5727046,
+    "user_structure_count": 88,
+    "calculated_structure_count": 211
+  },
+  "flavor": [
+    {
+      "group": "oak",
+      "stats": {
+        "count": 117,
+        "score": 13121
+      },
+      "primary_keywords": [
+        {
+          "id": 292,
+          "name": "oak",
+          "count": 42
+        },
+        {
+          "id": 434,
+          "name": "vanilla",
+          "count": 29
+        },
+        {
+          "id": 422,
+          "name": "tobacco",
+          "count": 20
+        },
+        {
+          "id": 101,
+          "name": "chocolate",
+          "count": 16
+        },
+        {
+          "id": 83,
+          "name": "cedar",
+          "count": 7
+        },
+        {
+          "id": 134,
+          "name": "dark chocolate",
+          "count": 3
+        },
+        {
+          "id": 79,
+          "name": "caramel",
+          "count": 3
+        },
+        {
+          "id": 280,
+          "name": "mocha",
+          "count": 3
+        },
+        {
+          "id": 103,
+          "name": "cigar",
+          "count": 2
+        },
+        {
+          "id": 117,
+          "name": "coffee",
+          "count": 2
+        },
+        {
+          "id": 104,
+          "name": "cigar box",
+          "count": 1
+        },
+        {
+          "id": 275,
+          "name": "milk chocolate",
+          "count": 1
+        },
+        {
+          "id": 115,
+          "name": "coconut",
+          "count": 1
+        },
+        {
+          "id": 112,
+          "name": "clove",
+          "count": 1
+        },
+        {
+          "id": 21,
+          "name": "baking spice",
+          "count": 1
+        }
+      ],
+      "secondary_keywords": [
+        {
+          "id": 242,
+          "name": "leather",
+          "count": 27
+        },
+        {
+          "id": 113,
+          "name": "cocoa",
+          "count": 17
+        },
+        {
+          "id": 105,
+          "name": "cinnamon",
+          "count": 5
+        },
+        {
+          "id": 384,
+          "name": "smoke",
+          "count": 4
+        },
+        {
+          "id": 88,
+          "name": "charcoal",
+          "count": 3
+        },
+        {
+          "id": 14,
+          "name": "ash",
+          "count": 1
+        },
+        {
+          "id": 6,
+          "name": "almond",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "group": "black_fruit",
+      "stats": {
+        "count": 91,
+        "score": 13098
+      },
+      "primary_keywords": [
+        {
+          "id": 135,
+          "name": "dark fruit",
+          "count": 32
+        },
+        {
+          "id": 49,
+          "name": "blackberry",
+          "count": 30
+        },
+        {
+          "id": 334,
+          "name": "plum",
+          "count": 20
+        },
+        {
+          "id": 55,
+          "name": "blueberry",
+          "count": 15
+        },
+        {
+          "id": 39,
+          "name": "black fruit",
+          "count": 9
+        },
+        {
+          "id": 38,
+          "name": "black cherry",
+          "count": 9
+        },
+        {
+          "id": 52,
+          "name": "blackcurrant",
+          "count": 7
+        },
+        {
+          "id": 470,
+          "name": "cassis",
+          "count": 6
+        },
+        {
+          "id": 229,
+          "name": "jam",
+          "count": 3
+        },
+        {
+          "id": 50,
+          "name": "blackberry jam",
+          "count": 1
+        },
+        {
+          "id": 43,
+          "name": "black plum",
+          "count": 1
+        }
+      ],
+      "secondary_keywords": [
+        {
+          "id": 341,
+          "name": "prune",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "group": "earth",
+      "stats": {
+        "count": 84,
+        "score": 7073
+      },
+      "primary_keywords": [
+        {
+          "id": 242,
+          "name": "leather",
+          "count": 27
+        },
+        {
+          "id": 113,
+          "name": "cocoa",
+          "count": 17
+        },
+        {
+          "id": 156,
+          "name": "earthy",
+          "count": 12
+        },
+        {
+          "id": 384,
+          "name": "smoke",
+          "count": 4
+        },
+        {
+          "id": 383,
+          "name": "slate",
+          "count": 4
+        },
+        {
+          "id": 88,
+          "name": "charcoal",
+          "count": 3
+        },
+        {
+          "id": 276,
+          "name": "minerals",
+          "count": 2
+        },
+        {
+          "id": 207,
+          "name": "grilled meat",
+          "count": 1
+        },
+        {
+          "id": 431,
+          "name": "underbrush",
+          "count": 1
+        },
+        {
+          "id": 398,
+          "name": "stone",
+          "count": 1
+        },
+        {
+          "id": 317,
+          "name": "pencil lead",
+          "count": 1
+        },
+        {
+          "id": 14,
+          "name": "ash",
+          "count": 1
+        },
+        {
+          "id": 192,
+          "name": "graphite",
+          "count": 1
+        },
+        {
+          "id": 427,
+          "name": "tree bark",
+          "count": 1
+        },
+        {
+          "id": 47,
+          "name": "black truffle",
+          "count": 1
+        },
+        {
+          "id": 284,
+          "name": "mushroom",
+          "count": 1
+        }
+      ],
+      "secondary_keywords": [
+        {
+          "id": 422,
+          "name": "tobacco",
+          "count": 20
+        },
+        {
+          "id": 134,
+          "name": "dark chocolate",
+          "count": 3
+        },
+        {
+          "id": 280,
+          "name": "mocha",
+          "count": 3
+        },
+        {
+          "id": 381,
+          "name": "savory",
+          "count": 1
+        },
+        {
+          "id": 6,
+          "name": "almond",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "group": "non_oak",
+      "stats": {
+        "count": 63,
+        "score": 1226
+      },
+      "primary_keywords": [
+        {
+          "id": 281,
+          "name": "molasses",
+          "count": 1
+        },
+        {
+          "id": 145,
+          "name": "dried fig",
+          "count": 1
+        },
+        {
+          "id": 417,
+          "name": "toast",
+          "count": 1
+        },
+        {
+          "id": 6,
+          "name": "almond",
+          "count": 1
+        }
+      ],
+      "secondary_keywords": [
+        {
+          "id": 434,
+          "name": "vanilla",
+          "count": 29
+        },
+        {
+          "id": 422,
+          "name": "tobacco",
+          "count": 20
+        },
+        {
+          "id": 83,
+          "name": "cedar",
+          "count": 7
+        },
+        {
+          "id": 163,
+          "name": "fig",
+          "count": 5
+        },
+        {
+          "id": 105,
+          "name": "cinnamon",
+          "count": 5
+        },
+        {
+          "id": 384,
+          "name": "smoke",
+          "count": 4
+        },
+        {
+          "id": 280,
+          "name": "mocha",
+          "count": 3
+        },
+        {
+          "id": 79,
+          "name": "caramel",
+          "count": 3
+        },
+        {
+          "id": 117,
+          "name": "coffee",
+          "count": 2
+        },
+        {
+          "id": 112,
+          "name": "clove",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "group": "spices",
+      "stats": {
+        "count": 57,
+        "score": 3572
+      },
+      "primary_keywords": [
+        {
+          "id": 320,
+          "name": "pepper",
+          "count": 20
+        },
+        {
+          "id": 105,
+          "name": "cinnamon",
+          "count": 5
+        },
+        {
+          "id": 249,
+          "name": "licorice",
+          "count": 5
+        },
+        {
+          "id": 7,
+          "name": "anise",
+          "count": 3
+        },
+        {
+          "id": 277,
+          "name": "mint",
+          "count": 1
+        },
+        {
+          "id": 381,
+          "name": "savory",
+          "count": 1
+        },
+        {
+          "id": 273,
+          "name": "menthol",
+          "count": 1
+        },
+        {
+          "id": 40,
+          "name": "black licorice",
+          "count": 1
+        }
+      ],
+      "secondary_keywords": [
+        {
+          "id": 434,
+          "name": "vanilla",
+          "count": 29
+        },
+        {
+          "id": 112,
+          "name": "clove",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "group": "red_fruit",
+      "stats": {
+        "count": 41,
+        "score": 3465
+      },
+      "primary_keywords": [
+        {
+          "id": 93,
+          "name": "cherry",
+          "count": 22
+        },
+        {
+          "id": 354,
+          "name": "red fruit",
+          "count": 5
+        },
+        {
+          "id": 348,
+          "name": "raspberry",
+          "count": 2
+        },
+        {
+          "id": 400,
+          "name": "strawberry",
+          "count": 2
+        },
+        {
+          "id": 357,
+          "name": "red plum",
+          "count": 1
+        },
+        {
+          "id": 336,
+          "name": "pomegranate",
+          "count": 1
+        }
+      ],
+      "secondary_keywords": [
+        {
+          "id": 38,
+          "name": "black cherry",
+          "count": 9
+        },
+        {
+          "id": 229,
+          "name": "jam",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "group": "dried_fruit",
+      "stats": {
+        "count": 10,
+        "score": 892
+      },
+      "primary_keywords": [
+        {
+          "id": 163,
+          "name": "fig",
+          "count": 5
+        },
+        {
+          "id": 347,
+          "name": "raisin",
+          "count": 3
+        },
+        {
+          "id": 341,
+          "name": "prune",
+          "count": 1
+        }
+      ],
+      "secondary_keywords": [
+        {
+          "id": 229,
+          "name": "jam",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "group": "floral",
+      "stats": {
+        "count": 4,
+        "score": 325
+      },
+      "primary_keywords": [
+        {
+          "id": 322,
+          "name": "perfume",
+          "count": 1
+        },
+        {
+          "id": 436,
+          "name": "violet",
+          "count": 1
+        },
+        {
+          "id": 241,
+          "name": "lavender",
+          "count": 1
+        }
+      ],
+      "secondary_keywords": [
+        {
+          "id": 381,
+          "name": "savory",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "group": "microbio",
+      "stats": {
+        "count": 4,
+        "score": 193
+      },
+      "primary_keywords": [
+        {
+          "id": 91,
+          "name": "cheese",
+          "count": 1
+        }
+      ],
+      "secondary_keywords": [
+        {
+          "id": 284,
+          "name": "mushroom",
+          "count": 1
+        },
+        {
+          "id": 417,
+          "name": "toast",
+          "count": 1
+        },
+        {
+          "id": 6,
+          "name": "almond",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "group": "vegetal",
+      "stats": {
+        "count": 2,
+        "score": 35
+      },
+      "secondary_keywords": [
+        {
+          "id": 381,
+          "name": "savory",
+          "count": 1
+        },
+        {
+          "id": 6,
+          "name": "almond",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "group": "tree_fruit",
+      "stats": {
+        "count": 1,
+        "score": 100
+      },
+      "primary_keywords": [
+        {
+          "id": 9,
+          "name": "apple",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "name": "wine-facts-api",
+  "version": "1.0.0",
+  "description": "API server for some wine facts",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "npx babel src --out-dir dist",
+    "start": "npx babel src --watch --out-dir dist",
+    "test": "mocha --require @babel/register"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ledwards/wine-facts-api.git"
+  },
+  "keywords": [
+    "wine",
+    "api"
+  ],
+  "author": "Lee Edwards",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ledwards/wine-facts-api/issues"
+  },
+  "homepage": "https://github.com/ledwards/wine-facts-api#readme",
+  "dependencies": {
+    "es6-promise": "^4.2.8",
+    "isomorphic-fetch": "^2.2.1",
+    "jsdom": "^16.2.2",
+    "xpath-html": "^1.0.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.3",
+    "@babel/core": "^7.10.3",
+    "@babel/node": "^7.10.3",
+    "@babel/polyfill": "^7.10.1",
+    "@babel/preset-env": "^7.10.3",
+    "mocha": "^8.0.1"
+  }
+}
