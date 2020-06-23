@@ -8,10 +8,10 @@ describe('VivinoClient', () => {
       this.timeout(30000);
 
       const client = new VivinoClient;
-      const wine = await client.getWineByName("Trinchero Mario's Vineyard 2017");
-      assert.equal(wine.name, "Mario's Vineyard Cabernet Sauvignon");
+      const wine = await client.getWineByName("Trinchero Mario's Vineyard", "2017");
+      assert.equal(wine.name, "Mario's Vineyard Cabernet Sauvignon", "2017");
       // more assertions
-      assert.equal(wine.webUrl, "https://www.vivino.com/wines/1845119");
+      assert.equal(wine.webUrl, "https://www.vivino.com/mario-s-vineyard-cabernet-sauvignon/w/1845119");
     }); 
   });
 });

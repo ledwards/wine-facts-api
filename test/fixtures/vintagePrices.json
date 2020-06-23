@@ -1,0 +1,104 @@
+{
+  "market": {
+    "country": "us",
+    "state": "CA",
+    "currency": "USD"
+  },
+  "availability": {
+    "vintage": {
+      "id": 20795397,
+      "year": "2015"
+    },
+    "median": {
+      "amount": 49.98,
+      "type": "market"
+    },
+    "price": {
+      "id": 21708244,
+      "amount": 39.95,
+      "discounted_from": 0,
+      "type": "vc"
+    }
+  },
+  "merchants_with_prices": [
+    {
+      "merchant": {
+        "id": 532,
+        "name": "Mission Liquor & Wines",
+        "seo_name": "mission-liquor-wines",
+        "legal_name": null,
+        "description": "Standard shipping",
+        "country": "us",
+        "state": "CA",
+        "status": 3,
+        "image": {
+          "location": "//images.vivino.com/merchants/originals/p1b4shij00000gk.jpg",
+          "variations": {
+            "large_square": "//images.vivino.com/merchants/thumbs/p1b4shij00000gk_400x400.jpg",
+            "medium_square": "//images.vivino.com/merchants/thumbs/p1b4shij00000gk_320x320.jpg",
+            "small_square": "//images.vivino.com/merchants/thumbs/p1b4shij00000gk_160x160.jpg"
+          }
+        },
+        "shipping_estimate": "Estimated between Thu, Jun 25 and Mon, Jun 29",
+        "impressum_url": null,
+        "tos_url": null,
+        "payment_options": {
+          "methods": [
+            {
+              "id": 1,
+              "name": "Stripe"
+            }
+          ]
+        },
+        "hidden": false
+      },
+      "prices": [
+        {
+          "id": 21708244,
+          "vintage_id": 20795397,
+          "amount": 39.95,
+          "discount_from_price": null,
+          "currency": "USD",
+          "bottle_type_id": 1,
+          "inventory_bottles_count": 27,
+          "url": "https://www.missionliquor.com/product/Trinchero-cabernet-sauvignon-marios-vineyard-2012/22283?utm_medium=pref-cpc&utm_source=vivino-ppc",
+          "message": "",
+          "producer_address": null,
+          "importer_address": null
+        }
+      ]
+    },
+    {
+      "merchant": {
+        "id": 13882,
+        "name": "Trinchero",
+        "seo_name": "trinchero",
+        "legal_name": null,
+        "description": "Mobile-friendly checkout. No minimum order.",
+        "country": "us",
+        "state": "CA",
+        "status": 0,
+        "image": null,
+        "shipping_estimate": "Delivery by Thu, Jun 25",
+        "impressum_url": null,
+        "tos_url": null,
+        "hidden": false
+      },
+      "prices": [
+        {
+          "id": 21054744,
+          "vintage_id": 20795397,
+          "amount": 60,
+          "discount_from_price": null,
+          "currency": "USD",
+          "bottle_type_id": 1,
+          "inventory_bottles_count": null,
+          "url": "http://store.trincheronapavalley.com/product/-Mario-s-Cabernet-Sauvignon1?maxRows=100&pageID=4CB97383-0F95-645E-B5BF-8BBEACF0BC58&position=4&productListName=Shop&sortBy=DisplayOrder&utm_medium=pref-cpc&utm_source=vivino-ppc",
+          "message": "",
+          "producer_address": null,
+          "importer_address": null
+        }
+      ]
+    }
+  ]
+}
