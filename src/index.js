@@ -6,13 +6,13 @@ import foods from './foods';
 // create a Wine class
 // try to understand structure count
 // try to solve some of TBD fields in _noData
-// structure into steps
-//make API obj
+// structure into steps of SAT
 
 // mask the requests using the same url params as the mobile app
 class VivinoClient {
   constructor() {
-    this._wine = {}
+    this._wine = {};
+    this._api = {};
   }
 
   async getWineByName(wineName, vintageYear) {
@@ -56,15 +56,7 @@ class VivinoClient {
     const name = obj.name;
     const slug = obj.seo_name;
     const description = obj.description.replace(/\n/g, ' ');
-
-    const buyUrl = `https://www.vivino.com/${slug}/w/${id}`;
-    const vintageBuyUrl = `${buyUrl}?year=${vintageYear}`;
-
-    const wineUrl = `https://api.vivino.com/wines/${id}`;
-    const tastesUrl = `https://api.vivino.com/wines/${id}/tastes`;
-    const reviewsUrl = `https://api.vivino.com/wines/${id}/reviews/_ranked`;
-    const vintageUrl = `https://api.vivino.com/vintages/${vintageId}`;
-    const pricesUrl = `${vintageUrl}/checkout_prices`;
+    const buyUrl = `https://www.vivino.com/${slug}/w/${id}?year=${vintageYear}`;
 
     this._wine = {
       id: id,
@@ -72,17 +64,25 @@ class VivinoClient {
       name: name,
       description: description,
       buyUrl: buyUrl,
-      vintageBuyUrl: vintageBuyUrl,
-      wineUrl: wineUrl,
-      vintageUrl: vintageUrl,
-      tastesUrl: tastesUrl,
-      reviewsUrl: reviewsUrl,
-      pricesUrl: pricesUrl,
+    };
+
+    const wineUrl = `https://api.vivino.com/wines/${id}`;
+    const tastesUrl = `https://api.vivino.com/wines/${id}/tastes`;
+    const reviewsUrl = `https://api.vivino.com/wines/${id}/reviews/_ranked`;
+    const vintageUrl = `https://api.vivino.com/vintages/${vintageId}`;
+    const pricesUrl = `${vintageUrl}/checkout_prices`;
+
+    this._wine._api = {
+      wines: wineUrl,
+      vintages: vintageUrl,
+      tastes: tastesUrl,
+      reviews: reviewsUrl,
+      prices: pricesUrl
     };
   };
 
   async _wines() {
-    const response = await fetch(this._wine.wineUrl);
+    const response = await fetch(this._wine._api.wines);
     const obj = await response.json().then((json) => { return json });
 
     const rating = obj.statistics.ratings_average;
@@ -100,7 +100,7 @@ class VivinoClient {
   };
 
   async _vintages() {
-    const response = await fetch(this._wine.vintageUrl);
+    const response = await fetch(this._wine._api.vintages);
     const obj = await response.json().then((json) => { return json });
 
     const natural = obj.is_natural;
@@ -125,7 +125,7 @@ class VivinoClient {
   };
 
   async _tastes() {
-    const response = await fetch(this._wine.tastesUrl);
+    const response = await fetch(this._wine._api.tastes);
     const obj = await response.json().then((json) => { return json });
 
     const acidity = _scale(obj.structure.acidity);
@@ -164,7 +164,7 @@ class VivinoClient {
   };
 
   async _reviews() {
-    const response = await fetch(this._wine.reviewsUrl);
+    const response = await fetch(this._wine._api.reviews);
     const obj = await response.json().then((json) => { return json });
     const reviews = obj.map(r => {
       const tastingNotes = [];
@@ -184,7 +184,7 @@ class VivinoClient {
   };
 
   async _prices() {
-    const response = await fetch(this._wine.pricesUrl);
+    const response = await fetch(this._wine._api.prices);
     const obj = await response.json().then((json) => { return json });
 
     const price = `$${obj.availability.median.amount}`;

@@ -22,12 +22,7 @@ describe('VivinoClient', () => {
       assert.equal(wine.style, "Napa Valley Cabernet Sauvignon");
       assert.equal(wine.foods[0], "Beef");
       assert.equal(wine.grapes[0], "Cabernet Sauvignon");
-      assert.equal(wine.buyUrl, "https://www.vivino.com/mario-s-vineyard-cabernet-sauvignon/w/1845119");
-      assert.equal(wine.vintageBuyUrl, "https://www.vivino.com/mario-s-vineyard-cabernet-sauvignon/w/1845119?year=2017");
-      assert.equal(wine.vintageUrl, "https://api.vivino.com/vintages/153409940");
-      assert.equal(wine.tastesUrl, "https://api.vivino.com/wines/1845119/tastes");
-      assert.equal(wine.reviewsUrl, "https://api.vivino.com/wines/1845119/reviews/_ranked");
-      assert.equal(wine.pricesUrl, "https://api.vivino.com/vintages/153409940/checkout_prices");
+      assert.equal(wine.buyUrl, "https://www.vivino.com/mario-s-vineyard-cabernet-sauvignon/w/1845119?year=2017");
 
       assert.equal(wine.acidity, 'high');
       assert.equal(wine.fizziness, null);
@@ -45,6 +40,11 @@ describe('VivinoClient', () => {
       assert.equal(wine.biodynamic, false);
 
       assert.equal(wine.price, "$49.98");
+
+      assert.equal(wine._api.vintages, "https://api.vivino.com/vintages/153409940");
+      assert.equal(wine._api.tastes, "https://api.vivino.com/wines/1845119/tastes");
+      assert.equal(wine._api.reviews, "https://api.vivino.com/wines/1845119/reviews/_ranked");
+      assert.equal(wine._api.prices, "https://api.vivino.com/vintages/153409940/checkout_prices");
     }); 
   });
 });
