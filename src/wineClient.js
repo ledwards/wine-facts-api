@@ -6,11 +6,6 @@ import foods from './foods';
 
 // try to understand structure count
 // try to solve some of TBD fields in _noData
-// structure into steps of SAT
-// refactor out of index
-
-// MISSING:
- // vintage year
 
 // mask the requests using the same url params as the mobile app
 class WineClient {
@@ -206,25 +201,24 @@ class WineClient {
   // document features with no data
   async _noData() {
     this._wine = Object.assign(this._wine, {
-      color: "no data, see reviews",
-      colorIntensity: "no data, see reviews",
-      noseIntensity: "no data",
-      noseDevelopment: "no data",
-      body: "no data, see structure", // calculate?
-      quality: "no data, see scores",
-      tertiaryFlavors: "combined with secondary",
-      colorIntensity: "no data, see reviews",
-      aromaIntensity: "no data, see reviews",
-      primaryAromas: "no data, see flavor",
-      secondaryAromas: "no data, see flavor",
-      tertiaryAromas: "no data, see flavor",
+      color: "no data, see reviews", // search reviews for color words
+      colorIntensity: "no data, see reviews", // search reviews for adjectives before color words
+      noseIntensity: "no data", // search reviews for adjective before nose
+      noseDevelopment: "no data", //guess: look for words young, youthful
+      body: "no data, see structure", // use structure and acidity
+      quality: "no data, see scores", // use scale of scores
+      tertiaryFlavors: "combined with secondary", // filter secondary into tertiary
+      aromaIntensity: "no data, see reviews", //search reviews for words before nose
+      primaryAromas: "no data, see flavor", // search for "_ on the nose"? or use flavor
+      secondaryAromas: "no data, see flavor", // search for "_ on the nose"? or use flavor
+      tertiaryAromas: "no data, see flavor", // search for "_ on the nose"? or use flavor
       ageing: "no data, cellar-tracker?", // heuristics or CT
-      balance: "no data, see reviews",
-      length: "no data, see reviews",
-      finish: "no data, see reviews",
-      intensity: "no data, see reviews", // or make it the same as flavorIntensity
-      complexity: "no data, see reviews",
-      conclusion: "no data, see professional reviews", //calculate
+      balance: "no data, see reviews", // compare acid to body? : or google this
+      length: "no data, see reviews", // use finish 1 or 0
+      finish: "no data, see reviews", // look for words before finish
+      intensity: this._wine.flavorIntensity,
+      complexity: "no data, see reviews", // look for the word complex : 1 or 0
+      conclusion: "no data, see professional reviews", //calculate based on BLIC
     });
   }
 }
