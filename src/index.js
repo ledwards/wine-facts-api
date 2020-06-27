@@ -1,18 +1,20 @@
 import '@babel/polyfill';
+import wineStyles from './wineStyles';
+import grapes from './grapes';
+import foods from './foods';
 
-// REMOVE
-import 'jsdom';
-import 'xpath-html';
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
+// create a Wine class
+// refactor Vivino Client to be simple
+// test out removing some async/wait for thens
+// try to understand structure count
+// try to solve some of TBD fields in _noData
 
+// mask the requests using the same url params as the mobile app
 class VivinoClient {
   constructor() {
   }
 
   async getWineByName(wineName, vintageYear) {
-    const urlSafeName = wineName.replace(/[\W_]+/g,' ').toLowerCase();
-
     const algoliaAppId = '9TAKGWJUXL';
     const algoliaApiKey = '9b7aa6e5b9c9b182386a216af561654b';
     const algoliaSearchUrl = `https://${algoliaAppId.toLowerCase()}-dsn.algolia.net/1/indexes/WINES_prod/query`;
@@ -34,68 +36,33 @@ class VivinoClient {
           }
         )
       });
-      // can these combined with a then????
-      const json = await response.json().then(function(json){
+
+      await response.json().then(function(json){
         const obj = json.hits[0];
 
-        const id = obj.objectID;
+        const id = obj.id;
+        const vintageId = obj.vintages.find(el => el.year == vintageYear).id;
         const name = obj.name;
         const slug = obj.seo_name;
-        const description = obj.description;
-        const rating = obj.statistics.ratings_average;
-        const alcohol = obj.alcohol;
+        const description = obj.description.replace(/\n/g, ' ');
 
-        const regionName = obj.region.name;
-        const regionCountry = obj.region.country;
-        const regionClass = obj.region.class.abbreviation;
+        const buyUrl = `https://www.vivino.com/${slug}/w/${id}`;
+        const vintageBuyUrl = `${buyUrl}?year=${vintageYear}`;
 
-        const wineryName = obj.winery.name;
-        const wineryRegionName = obj.winery.region.name;
-        const wineryRegionCountry = obj.winery.region.country;
-        const wineryRegionClass = obj.winery.region.class.abbreviation;
-
-        const styleId = obj.style;
-        const foodsIds = obj.foods;
-        const grapesIds = obj.grapes;
-
-        const vintageId = obj.vintages.find(el => el.year == vintageYear).id;
-
-        // Idea: display images to let people pick the right label to select vintage!
-        // images
-
-        const webUrl = `https://www.vivino.com/${slug}/w/${id}`;
-        const vintageWebUrl = `${webUrl}?year=${vintageYear}`;
-
-        const vintageUrl = `https://api.vivino.com/vintages/${vintageId}`;
+        const wineUrl = `https://api.vivino.com/wines/${id}`;
         const tastesUrl = `https://api.vivino.com/wines/${id}/tastes`;
         const reviewsUrl = `https://api.vivino.com/wines/${id}/reviews/_ranked`;
+        const vintageUrl = `https://api.vivino.com/vintages/${vintageId}`;
         const pricesUrl = `${vintageUrl}/checkout_prices`;
 
         wine = {
           id: id,
+          vintageId: vintageId,
           name: name,
           description: description,
-          rating: rating,
-          alcohol: alcohol,
-          region: {
-            name: regionName,
-            countryCode: regionCountry,
-            class: regionClass
-          },
-          winery: {
-            name: wineryName,
-            region: {
-              name: wineryRegionName,
-              countryCode: wineryRegionCountry,
-              class: wineryRegionClass
-            }
-          },
-          vintageId: vintageId,
-          styleId: styleId, //lookup
-          foodsIds: foodsIds, //lookup
-          grapesIds: grapesIds, //lookup
-          webUrl: webUrl,
-          vintageWebUrl: vintageWebUrl,
+          buyUrl: buyUrl,
+          vintageBuyUrl: vintageBuyUrl,
+          wineUrl: wineUrl,
           vintageUrl: vintageUrl,
           tastesUrl: tastesUrl,
           reviewsUrl: reviewsUrl,
@@ -105,59 +72,91 @@ class VivinoClient {
     };
     await _algoliaSearch();
 
+    async function _wines() {
+      const response = await fetch(wine.wineUrl);
+      await response.json().then(function(obj){
+        const rating = obj.statistics.ratings_average;
+
+        const regionName = obj.region.name;
+        const regionCountry = obj.region.country.toUpperCase();
+        const regionClass = obj.region.class.abbreviation;
+        const region = `${regionName}, ${regionCountry} ${regionClass}`;
+        const wineryName = obj.winery.name;
+
+        wine = Object.assign(wine, {
+          rating: rating,
+          region: region,
+          producer: wineryName,
+        });
+      });
+    };
+    await _wines();
+
+    async function _vintages() {
+      const response = await fetch(wine.vintageUrl);
+      await response.json().then(function(obj){
+        const natural = obj.is_natural;
+        const organic = Boolean(obj.organic_certification_id);
+        const biodynamic = Boolean(obj.certified_biodynamic);
+        const alcoholContent = obj.wine.alcohol;
+
+        const style = wineStyles(obj.wine.style_id);
+        const foodsList = obj.wine.foods.map(f => { return foods(f) });
+        const grapesList = obj.wine.grapes.map(id => { return grapes(id); });
+
+        const alcohol = _scaleAlcohol(alcoholContent);
+
+        wine = Object.assign(wine, {
+          natural: natural,
+          organic: organic,
+          biodynamic: biodynamic,
+          alcoholContent: alcoholContent,
+          style: style,
+          grapes: grapesList,
+          foods: foodsList,
+          alcohol: alcohol,
+        });
+      });
+    };
+    await _vintages();
+
+
     async function _tastes() {
       const response = await fetch(wine.tastesUrl);
-      const html = await response.json().then(function(obj){
-        const acidity = obj.structure.acidity // normalize
-        const fizziness = obj.structure.fizziness // normalize
-        const intensity = obj.structure.fizziness // normalize
-        const sweetness = obj.structure.sweetness // normalize
-        const tannin = obj.structure.tannin // normalize
-        const userStructureCount = obj.structure.user_structure_count // pick one and understand
-        const calculatedStructureCount = obj.structure.calculated_structure_count // pick one and understand
+      await response.json().then(function(obj){
+        const acidity = _scale(obj.structure.acidity);
+        const fizziness = _scale(obj.structure.fizziness, { low: 'delictae', medium: 'creamy', high: 'aggressive' });
+        const intensity = _scale(obj.structure.intensity, { high: 'pronounced' });
+        const sweetness = _scale(obj.structure.sweetness, { low: 'dry', mediumMinus: 'off-dry', medium: 'medium dry', mediumPlus: 'medium sweet', high: 'sweet', na: 'dry' });
+        const tannin = _scale(obj.structure.tannin);
+        const structureCount = obj.structure.calculated_structure_count;
 
-        var flavorCount;
-        var primaryTastingNotes;
-        var secondaryTastingNotes;
-        [flavorCount, primaryTastingNotes, secondaryTastingNotes] = obj.flavor.map(o => {
-          try {
-          var primaryTastingNotes =
-            ((typeof(o["primary_keywords"]) == 'undefined') ? [] : o["primary_keywords"]).map(k => {
-              return { name: k.name, count: k.count } 
+        var primaryFlavorCharacteristics = [];
+        var secondaryFlavorCharacteristics = [];
+
+        obj.flavor.forEach(g => {
+          if(typeof(g.primary_keywords) !== 'undefined') {
+            g.primary_keywords.forEach(n => {
+              primaryFlavorCharacteristics.push({ name: `${n.name} (${g.group})`, count: n.count });
             });
-          } catch (error) {
-          var primaryTastingNotes = [];
           };
 
-          try {
-          var secondaryTastingNotes =
-            ((typeof(o["secondary_keywords"]) == 'undefined') ? [] : o["secondary_keywords"]).map(k => {
-              return { name: k.name, count: k.count } 
+          if(typeof(g.secondary_keywords) !== 'undefined') {
+            g.secondary_keywords.forEach(n => {
+              secondaryFlavorCharacteristics.push({ name: `${n.name} (${g.group})`, count: n.count });
             });
-          } catch (error) {
-          var secondaryTastingNotes = [];
           };
-
-          // TODO: Remove counts, and just take the first 5 results for each
-
-          return [
-            o.stats.count,
-            primaryTastingNotes,
-            secondaryTastingNotes
-          ]
         });
 
         wine = Object.assign(wine, {
           acidity: acidity,
-          fizziness: fizziness,
+          mousse: fizziness,
           intensity: intensity,
           sweetness: sweetness,
           tannin: tannin,
-          userStructureCount: userStructureCount,
-          calculatedStructureCount: calculatedStructureCount,
-          flavorCount: flavorCount,
-          primaryTastingNotes,
-          secondaryTastingNotes
+          structureCount: structureCount,
+          primaryFlavorCharacteristics: primaryFlavorCharacteristics,
+          secondaryFlavorCharacteristics: secondaryFlavorCharacteristics,
         });
       });
     };
@@ -165,13 +164,16 @@ class VivinoClient {
 
     async function _reviews() {
       const response = await fetch(wine.reviewsUrl);
-      const html = await response.json().then(function(obj){
+      await response.json().then(function(obj){
         const reviews = obj.map(r => {
-          const description = r.note;
-          const notes = (typeof(r["flavor_word_matches"]) == 'undefined' ? [] : r["flavor_word_matches"].map(f => { f.match }));
+          const tastingNotes = [];
+          const description = r.note.replace(/\n/g, ' ');
+          if(typeof(r.flavor_word_matches) !== 'undefined') {
+            r.flavor_word_matches.forEach(f => { tastingNotes.push(f.match); });
+          }
           return {
             description: description,
-            notes: notes
+            tastingNotes: tastingNotes
           };
         });
         wine = Object.assign(wine, {
@@ -181,30 +183,11 @@ class VivinoClient {
     };
     await _reviews();
 
-    // Q: Is there a price URL for the specific vintage?
-    // TODO: Find the vintage earlier on and use it here
-    // then maybe use:
-    // /vintages/VID
-    // /vintages/VID/checkout_prices
-    async function _vintage() {
-      const response = await fetch(wine.vintageUrl);
-      const html = await response.json().then(function(obj){
-        const organic = Boolean(obj.organic_certification_id);
-        const biodynamic = Boolean(obj.certified_biodynamic);
-        wine = Object.assign(wine, {
-          organic: organic,
-          biodyamic: biodynamic
-        });
-      });
-    };
-    await _vintage();
-
     // is this info somewhere else too?
     async function _prices() {
       const response = await fetch(wine.pricesUrl);
-      const html = await response.json().then(function(obj){
-        console.log(JSON.stringify(obj));
-        const price = obj.availability.median.amount;
+      await response.json().then(function(obj){
+        const price = `$${obj.availability.median.amount}`;
         wine = Object.assign(wine, {
           price: price
         });
@@ -212,11 +195,60 @@ class VivinoClient {
     };
     await _prices();
 
-    // /wine-styles/WINESTYLEID
+    // document features with no data
+    async function _noData() {
+      wine = Object.assign(wine, {
+        color: "no data, see reviews",
+        colorIntensity: "no data, see reviews",
+        noseIntensity: "no data",
+        noseDevelopment: "no data",
+        body: "no data, see structure", // calculate?
+        quality: "no data, see scores",
+        tertiaryTastingNotes: "combined with secondary",
+        noseCharacteristics: "no data, see flavor",
+        ageing: "no data, cellar-tracker?", // heuristics or CT
+        balance: "no data, see reviews",
+        length: "no data, see reviews",
+        finish: "no data, see reviews",
+        intensity: "no data, see reviews",
+        complexity: "no data, see reviews",
 
-    console.log(wine);
+        conclusion: "no data, see professional reviews" //calculate
+      });
+    }
+
     return wine;
   }
 }
+
+const _scale = (levelNum, d = { low: "low", mediumMinus: "medium (-)", medium: "medium", mediumPlus: "medium (+)", high: "high", na: "n/a" }) => {
+  const level = levelNum / 5.0 * 9.0; // normalize to 9ths
+
+  if (level < 3) {
+    return d.low;
+  } else if (3 <= level && level < 4) {
+    return d.mediumMinus;
+  } else if (4 <= level && level < 5) {
+    return d.medium;
+  } else if (5 <= level && level < 6) {
+    return d.mediumPlus;
+  } else if (6 <= level) {
+    return d.high;
+  } else {
+    return d.na;
+  };
+};
+
+const _scaleAlcohol = (level) => {
+  if (level <= 11) {
+    return "low";
+  } else if (11 < level && level <= 14) {
+    return "medium";
+  } else if (14 < level) {
+    return "high";
+  } else {
+    return "no data";
+  };
+};
 
 export default VivinoClient;
