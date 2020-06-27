@@ -24,7 +24,6 @@ class WineClient {
     this._api = {}; // in case client gets reused
 
     await this._algoliaSearch(wineName, vintageYear);
-
     await this._wines();
     await this._vintages();
     await this._tastes();
@@ -32,12 +31,11 @@ class WineClient {
     await this._prices();
     await this._noData();
 
-    console.log(this._wine);
-
     return this._wine;
   }
 
   async _algoliaSearch(wineName, vintageYear = "N.V.") {
+     // sort of factor out
     const algoliaAppId = '9TAKGWJUXL';
     const algoliaApiKey = '9b7aa6e5b9c9b182386a216af561654b';
     const algoliaSearchUrl = `https://${algoliaAppId.toLowerCase()}-dsn.algolia.net/1/indexes/WINES_prod/query`;
@@ -52,7 +50,7 @@ class WineClient {
       body: JSON.stringify(
         {
           hitsPerPage: 1,
-          query: wineName
+          query: wineName,
         }
       )
     });
@@ -88,7 +86,7 @@ class WineClient {
       vintages: vintageUrl,
       tastes: tastesUrl,
       reviews: reviewsUrl,
-      prices: pricesUrl
+      prices: pricesUrl,
     };
   };
 
@@ -140,13 +138,13 @@ class WineClient {
     const obj = await response.json().then((json) => { return json });
 
     const acidity = _scale(obj.structure.acidity);
-    const fizziness = _scale(obj.structure.fizziness, 'delicate', 'creamy', 'creamy', 'creamy', 'aggressive', 'n/a');
     const intensity = _scale(obj.structure.intensity, 'light', 'medium (-)', 'medium', 'medium (+)', 'pronounced', 'n/a');
     const sweetness = _scale(obj.structure.sweetness, 'dry', 'off-dry', 'medium dry', 'medium sweet', 'sweet', 'dry');
     const tannin = _scale(obj.structure.tannin);
     const structureCount = obj.structure.calculated_structure_count; // come back to this
     var primaryFlavors = [];
     var secondaryFlavors = [];
+    const fizziness = _scale(obj.structure.fizziness, 'delicate', 'creamy', 'creamy', 'creamy', 'aggressive', 'n/a');
 
     obj.flavor.forEach(g => {
       if(typeof(g.primary_keywords) !== 'undefined') {
@@ -170,6 +168,7 @@ class WineClient {
       structureCount: structureCount,
       primaryFlavors: primaryFlavors,
       secondaryFlavors: secondaryFlavors,
+      mousse: fizziness,
     });
   };
 
@@ -183,13 +182,13 @@ class WineClient {
         r.flavor_word_matches.forEach(f => { tastingNotes.push(f.match); });
       }
       return {
-        description: description,
-        tastingNotes: tastingNotes
+        notes: description,
+        flavors: tastingNotes
       };
     });
 
     this._wine = Object.assign(this._wine, {
-      userReviews: reviews
+      userReviews: reviews,
     });
   };
 
@@ -200,7 +199,7 @@ class WineClient {
     const price = `$${obj.availability.median.amount}`;
 
     this._wine = Object.assign(this._wine, {
-      price: price
+      price: price,
     });
   };
 
@@ -225,13 +224,13 @@ class WineClient {
       finish: "no data, see reviews",
       intensity: "no data, see reviews", // or make it the same as flavorIntensity
       complexity: "no data, see reviews",
-      conclusion: "no data, see professional reviews" //calculate
+      conclusion: "no data, see professional reviews", //calculate
     });
   }
 }
 
-const _scale = (levelNum, low = "low", mediumMinus = "medium (-)", medium = "medium", mediumPlus = "medium (+)", high = "high", na = "n/a") => {
-  const level = levelNum / 5.0 * 9.0; // normalize to 9ths
+const _scale = (num, low = "low", mediumMinus = "medium (-)", medium = "medium", mediumPlus = "medium (+)", high = "high", na = "n/a") => {
+  const level = num / 5.0 * 9.0; // normalize to 9ths
 
   if (0 < level && level < 3) {
     return low;

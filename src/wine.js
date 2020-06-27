@@ -30,6 +30,7 @@ class Wine {
     this.secondaryFlavors = params.secondaryFlavors; // Vivino : tastes
     this.tertiaryFlavors = params.tertiaryFlavors;
     this.palateObservations = params.palateObservations;
+    this.mousse = params.mousse;
     this.finish = params.finish;
 
     this.balance = params.balance;

@@ -39,6 +39,7 @@ describe('WineClient', () => {
       assert.equal(wine.secondaryFlavors[0].name, 'leather');
       // tertiaryFlavors
       // palateObservations
+      assert.equal(wine.mousse, 'n/a');
       // finish
 
       // balance
@@ -53,8 +54,8 @@ describe('WineClient', () => {
       assert.equal(wine.rating, 4.3);
       assert.equal(wine.description, 'The fruit from this benchland area of St. Helena has great structure and velvety tannins. On the nose, I get sweet white floral, crushed anise seed and mineral aromas followed by dark cherry, fig jam, toasted brioche and savory flavors. It is an elegant and pretty wine with firm tannins. I hope that if Mario Trinchero were looking down he would be proud of this vineyard and the resulting wine');
       // professional reviews
-      assert.equal(wine.userReviews[0].description, "This is a textbook Napa Valley Cabernet. Perfectly balanced and silky smooth while at the same time big and bold.Fruity, dry, good value etc..");
-      assert.equal(wine.userReviews[1].tastingNotes[0], "blueberry");
+      assert.equal(wine.userReviews[0].notes, "This is a textbook Napa Valley Cabernet. Perfectly balanced and silky smooth while at the same time big and bold.Fruity, dry, good value etc..");
+      assert.equal(wine.userReviews[1].flavors[0], "blueberry");
       assert.equal(wine.organic, false);
       assert.equal(wine.natural, false);
       assert.equal(wine.biodynamic, false);
