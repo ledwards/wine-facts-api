@@ -1,6 +1,5 @@
 import * as assert from 'assert';
 import WineClient from '../src/wineClient';
-import "isomorphic-fetch";
 
 describe('WineClient', () => {
   describe('#getWine()', () => {
@@ -54,7 +53,9 @@ describe('WineClient', () => {
       assert.equal(wine.rating, 4.3);
       assert.equal(wine.description, 'The fruit from this benchland area of St. Helena has great structure and velvety tannins. On the nose, I get sweet white floral, crushed anise seed and mineral aromas followed by dark cherry, fig jam, toasted brioche and savory flavors. It is an elegant and pretty wine with firm tannins. I hope that if Mario Trinchero were looking down he would be proud of this vineyard and the resulting wine');
       // professional reviews
+      assert.equal(wine.professionalReviews[0], "Smooth yet rich, with impressive notes of smoke, leather, coffee, dried herbs and truffle. The Merlot adds a wonderful roundness to the firm and ripe tannin.");
       assert.equal(wine.userReviews[0].notes, "This is a textbook Napa Valley Cabernet. Perfectly balanced and silky smooth while at the same time big and bold.Fruity, dry, good value etc..");
+
       assert.equal(wine.userReviews[1].flavors[0], "blueberry");
       assert.equal(wine.organic, false);
       assert.equal(wine.natural, false);
@@ -66,10 +67,10 @@ describe('WineClient', () => {
 
       assert.equal(wine.structureCount, 211);
 
-      assert.equal(wine._api.vintages, "https://api.vivino.com/vintages/153409940");
-      assert.equal(wine._api.tastes, "https://api.vivino.com/wines/1845119/tastes");
-      assert.equal(wine._api.reviews, "https://api.vivino.com/wines/1845119/reviews/_ranked");
-      assert.equal(wine._api.prices, "https://api.vivino.com/vintages/153409940/checkout_prices");
+      assert.equal(client._api.vintages, "https://api.vivino.com/vintages/153409940");
+      assert.equal(client._api.tastes, "https://api.vivino.com/wines/1845119/tastes");
+      assert.equal(client._api.reviews, "https://api.vivino.com/wines/1845119/reviews/_ranked");
+      assert.equal(client._api.prices, "https://api.vivino.com/vintages/153409940/checkout_prices");
     }); 
   });
 });

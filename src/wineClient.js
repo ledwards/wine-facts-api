@@ -1,8 +1,13 @@
 import '@babel/polyfill';
+import 'isomorphic-fetch';
+import 'jsdom';
 import Wine from './wine';
 import wineStyles from './wineStyles';
 import grapes from './grapes';
 import foods from './foods';
+
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
 
 // try to understand structure count
 // try to solve some of TBD fields in _noData
@@ -23,6 +28,7 @@ class WineClient {
     await this._vintages();
     await this._tastes();
     await this._reviews();
+    await this._professionalReviews();
     await this._prices();
     await this._noData();
 
@@ -30,7 +36,7 @@ class WineClient {
   }
 
   async _algoliaSearch(wineName, vintageYear = "N.V.") {
-     // sort of factor out
+    // sort of factor out
     const algoliaAppId = '9TAKGWJUXL';
     const algoliaApiKey = '9b7aa6e5b9c9b182386a216af561654b';
     const algoliaSearchUrl = `https://${algoliaAppId.toLowerCase()}-dsn.algolia.net/1/indexes/WINES_prod/query`;
@@ -75,18 +81,20 @@ class WineClient {
     const reviewsUrl = `https://api.vivino.com/wines/${id}/reviews/_ranked`;
     const vintageUrl = `https://api.vivino.com/vintages/${vintage.id}`;
     const pricesUrl = `${vintageUrl}/checkout_prices`;
+    const professionalReviewsUrl = `https://www.wine.com/search/${encodeURI(wineName.toLowerCase())}/0`
 
-    this._wine._api = {
+    this._api = {
       wines: wineUrl,
       vintages: vintageUrl,
       tastes: tastesUrl,
       reviews: reviewsUrl,
+      professionalReviews: professionalReviewsUrl,
       prices: pricesUrl,
     };
   };
 
   async _wines() {
-    const response = await fetch(this._wine._api.wines);
+    const response = await fetch(this._api.wines);
     const obj = await response.json().then((json) => { return json });
 
     const rating = obj.statistics.ratings_average;
@@ -104,7 +112,7 @@ class WineClient {
   };
 
   async _vintages() {
-    const response = await fetch(this._wine._api.vintages);
+    const response = await fetch(this._api.vintages);
     const obj = await response.json().then((json) => { return json });
 
     const natural = Boolean(obj.is_natural);
@@ -129,7 +137,7 @@ class WineClient {
   };
 
   async _tastes() {
-    const response = await fetch(this._wine._api.tastes);
+    const response = await fetch(this._api.tastes);
     const obj = await response.json().then((json) => { return json });
 
     const acidity = _scale(obj.structure.acidity);
@@ -168,7 +176,7 @@ class WineClient {
   };
 
   async _reviews() {
-    const response = await fetch(this._wine._api.reviews);
+    const response = await fetch(this._api.reviews);
     const obj = await response.json().then((json) => { return json });
     const reviews = obj.map(r => {
       const tastingNotes = [];
@@ -187,8 +195,31 @@ class WineClient {
     });
   };
 
+  async _professionalReviews() {
+    var professionalReviewsListingUrl;
+    var reviews = [];
+
+    const response = await fetch(this._api.professionalReviews);
+    await response.text().then(function(html){
+      const doc = new JSDOM(html).window.document;
+      const node = doc.querySelector("a.prodItemImage_link");
+      const listingPath = node.getAttribute('href');
+      professionalReviewsListingUrl = `https://www.wine.com${listingPath}`;
+    });
+
+    const response2 = await fetch(professionalReviewsListingUrl);
+    await response2.text().then(function(html){
+      const doc = new JSDOM(html).window.document;
+      reviews = Array.from(doc.querySelectorAll(".pipProfessionalReviews_review")).map(r => { return r.textContent; });
+    });
+
+    this._wine = Object.assign(this._wine, {
+      professionalReviews: reviews,
+    });
+  };
+
   async _prices() {
-    const response = await fetch(this._wine._api.prices);
+    const response = await fetch(this._api.prices);
     const obj = await response.json().then((json) => { return json });
 
     const price = `$${obj.availability.median.amount}`;

@@ -2,9 +2,9 @@ import '@babel/polyfill';
 
 class Wine {
   constructor(params = DEFAULTS) {
-    this.name = params.name; // Algolia
+    this.name = params.name; // supplied : cleaned with search
     this.producer = params.producer; // Vivino : wines
-    this.vintage = params.vintage;
+    this.vintage = params.vintage; // supplied : cleaned with search
     this.region = params.region; // Vivino : wines
     this.grapes = params.grapes; // Vivino : vintages
     this.style = params.style; // Vivino : vintages
@@ -43,8 +43,8 @@ class Wine {
     this.bottleAgeingExplanation = params.bottleAgeingExplanation;
 
     this.rating = params.rating; // Vivino : wines
-    this.description = params.description;
-    this.professionalReviews = params.professionalReviews;
+    this.description = params.description; // Vivino : search
+    this.professionalReviews = params.professionalReviews; // Wine.com : product lisitng page
     this.userReviews = params.userReviews; // Vivino : reviews
     this.organic = params.organic; // Vivino : vintages
     this.natural = params.natural; // Vivino : vintages
